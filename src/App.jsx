@@ -9,7 +9,7 @@ import StepDone from './steps/StepDone';
 const TOTAL_STEPS = 3;
 
 // ── Brand name — change this to your product name ──────────
-const BRAND = 'BOTANICA';
+const BRAND = 'After Sesh';
 
 export default function App() {
   const [step, setStep] = useState(0);
