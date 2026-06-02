@@ -1,10 +1,10 @@
-import { useState }    from 'react';
-import { supabase }    from './lib/supabase';
-import ProgressBar     from './components/ProgressBar';
-import Step1Identity   from './steps/Step1Identity';
-import Step2Effect     from './steps/Step2Effect';
-import Step3Product    from './steps/Step3Product';
-import StepDone        from './steps/StepDone';
+import { useState } from 'react';
+import { supabase } from './lib/supabase';
+import ProgressBar from './components/ProgressBar';
+import Step1Identity from './steps/Step1Identity';
+import Step2Effect from './steps/Step2Effect';
+import Step3Product from './steps/Step3Product';
+import StepDone from './steps/StepDone';
 
 const TOTAL_STEPS = 3;
 
@@ -12,14 +12,14 @@ const TOTAL_STEPS = 3;
 const BRAND = 'BOTANICA';
 
 export default function App() {
-  const [step, setStep]             = useState(0);
-  const [formData, setFormData]     = useState({});
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const mergeData = (data) => setFormData(prev => ({ ...prev, ...data }));
-  const next      = ()     => setStep(s => s + 1);
-  const back      = ()     => setStep(s => s - 1);
+  const next = () => setStep(s => s + 1);
+  const back = () => setStep(s => s - 1);
 
   // Upload a Blob to Supabase Storage, return public URL
   const uploadAudio = async (blob, filename) => {
@@ -42,37 +42,37 @@ export default function App() {
     try {
       const ts = Date.now();
       const [audioUrl, feedbackAudioUrl] = await Promise.all([
-        uploadAudio(all.effectAudioBlob,   `effect-${ts}.webm`),
+        uploadAudio(all.effectAudioBlob, `effect-${ts}.webm`),
         uploadAudio(all.feedbackAudioBlob, `feedback-${ts}.webm`),
       ]);
 
       const { error } = await supabase.from('responses').insert({
         // Phase 1
-        name:               all.name?.trim(),
-        contact:            all.contact?.trim(),
-        age:                all.age ? parseInt(all.age, 10) : null,
-        occupation:         all.occupation?.trim() || null,
-        city:               all.city?.trim()       || null,
-        smokes:             all.smokes             || null,
-        drinks:             all.drinks             || null,
-        caffeine:           all.caffeine           || null,
-        takes_supplements:  all.takesSupplements === 'yes',
+        name: all.name?.trim(),
+        contact: all.contact?.trim(),
+        age: all.age ? parseInt(all.age, 10) : null,
+        occupation: all.occupation?.trim() || null,
+        city: all.city?.trim() || null,
+        smokes: all.smokes || null,
+        drinks: all.drinks || null,
+        caffeine: all.caffeine || null,
+        takes_supplements: all.takesSupplements === 'yes',
         supplement_details: all.supplementDetails?.trim() || null,
         // Phase 2
-        felt_effect:        all.feltEffect         || null,
-        effect_onset:       all.effectOnset        || null,
-        effect_descriptors: all.effectDescriptors  || [],
-        effect_other_text:  all.effectOtherText?.trim() || null,
-        unwanted_effects:   all.unwantedEffects    || [],
-        audio_url:          audioUrl,
+        felt_effect: all.feltEffect || null,
+        effect_onset: all.effectOnset || null,
+        effect_descriptors: all.effectDescriptors || [],
+        effect_other_text: all.effectOtherText?.trim() || null,
+        unwanted_effects: all.unwantedEffects || [],
+        audio_url: audioUrl,
         // Phase 3
-        taste_rating:       all.tasteRating        || null,
-        aroma_rating:       all.aromaRating        || null,
-        would_buy:          all.wouldBuy           || null,
-        price_point:        all.pricePoint         || null,
-        occasions:          all.occasions          || [],
+        taste_rating: all.tasteRating || null,
+        aroma_rating: all.aromaRating || null,
+        would_buy: all.wouldBuy || null,
+        price_point: all.pricePoint || null,
+        occasions: all.occasions || [],
         feedback_audio_url: feedbackAudioUrl,
-        open_to_followup:   all.openToFollowup === 'yes',
+        open_to_followup: all.openToFollowup === 'yes',
       });
 
       if (error) throw new Error(error.message);
@@ -116,8 +116,13 @@ export default function App() {
               <span className="intro-meta-item">~4 minutes</span>
               <span className="intro-meta-item">Voice recording</span>
             </div>
+            <p className="consent-text">
+              By continuing you consent to your responses and voice recording
+              being stored securely and used only for product research by our team.
+              Your data will not be shared with third parties.
+            </p>
             <button className="btn-primary" onClick={next} type="button">
-              Start →
+              I Agree &amp; Start →
             </button>
           </div>
         )}
