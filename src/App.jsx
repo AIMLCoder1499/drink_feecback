@@ -21,17 +21,14 @@ export default function App() {
   const next = () => setStep(s => s + 1);
   const back = () => setStep(s => s - 1);
 
-  // Upload a Blob to Supabase Storage, return public URL
+  // Upload a Blob to Supabase Storage, return file path (private bucket)
   const uploadAudio = async (blob, filename) => {
     if (!blob) return null;
     const { data, error } = await supabase.storage
       .from('audio-recordings')
       .upload(filename, blob, { contentType: blob.type || 'audio/webm', upsert: false });
     if (error) throw new Error(`Audio upload failed: ${error.message}`);
-    const { data: urlData } = supabase.storage
-      .from('audio-recordings')
-      .getPublicUrl(data.path);
-    return urlData.publicUrl;
+    return data.path; // private bucket — store path only, not a public URL
   };
 
   const handleSubmit = async (step3Data) => {
