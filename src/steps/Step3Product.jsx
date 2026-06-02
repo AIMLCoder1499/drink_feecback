@@ -11,10 +11,7 @@ const BUY_OPTS = [
 ];
 
 const PRICE_OPTS = [
-  { value: '40to60',    label: '₹40–60' },
-  { value: '60to80',    label: '₹60–80' },
-  { value: '80to100',   label: '₹80–100' },
-  { value: 'wouldnt',   label: "Wouldn't buy" },
+  '', '₹40–60', '₹60–80', '₹80–100', '₹100–150', '₹150+', "Wouldn't buy",
 ];
 
 const OCCASION_OPTS = [
@@ -52,12 +49,12 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
 
   const validate = () => {
     const e = {};
-    if (!form.tasteRating)           e.taste     = 'Please rate the taste';
-    if (!form.aromaRating)           e.aroma     = 'Please rate the aroma';
-    if (!form.wouldBuy)              e.wouldBuy  = 'Please select one';
-    if (!form.pricePoint)            e.pricePoint= 'Please select one';
-    if (form.occasions.length === 0) e.occasions = 'Select at least one';
-    if (!form.openToFollowup)        e.followup  = 'Please select one';
+    if (!form.tasteRating)           e.taste      = 'Please rate the taste';
+    if (!form.aromaRating)           e.aroma      = 'Please rate the aroma';
+    if (!form.wouldBuy)              e.wouldBuy   = 'Please select one';
+    if (!form.pricePoint)            e.pricePoint = 'Please select one';
+    if (form.occasions.length === 0) e.occasions  = 'Select at least one';
+    if (!form.openToFollowup)        e.followup   = 'Please select one';
     return e;
   };
 
@@ -103,15 +100,19 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
         {errors.wouldBuy && <p className="field-error">{errors.wouldBuy}</p>}
       </div>
 
-      {/* Price point */}
+      {/* Price point — dropdown */}
       <div className="field">
         <label className="field-label">What price feels right for a can? <span className="required">*</span></label>
-        <RadioGroup
-          options={PRICE_OPTS}
+        <select
           value={form.pricePoint}
-          onChange={v => set('pricePoint', v)}
-          inline
-        />
+          onChange={e => set('pricePoint', e.target.value)}
+        >
+          {PRICE_OPTS.map(opt => (
+            <option key={opt} value={opt} disabled={opt === ''}>
+              {opt === '' ? 'Select a price range' : opt}
+            </option>
+          ))}
+        </select>
         {errors.pricePoint && <p className="field-error">{errors.pricePoint}</p>}
       </div>
 
@@ -120,7 +121,7 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
       {/* Occasions */}
       <div className="field">
         <label className="field-label">
-          Where would you want to reach for this drink? <span className="required">*</span>
+          Where would you reach for this drink? <span className="required">*</span>
         </label>
         <p className="field-hint">Select all that feel right</p>
         <div style={{ marginTop: 10 }}>
@@ -136,7 +137,7 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
       {/* Optional voice */}
       <div className="field">
         <label className="field-label" style={{ marginBottom: 12 }}>
-          Anything else to add about the taste or experience?
+          Anything else about the taste or experience?
         </label>
         <VoiceRecorder
           label="Any final thoughts — taste, feeling, or what you'd change."
@@ -161,7 +162,6 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
         {errors.followup && <p className="field-error">{errors.followup}</p>}
       </div>
 
-      {/* Error banner */}
       {error && <div className="error-banner">Something went wrong: {error}</div>}
 
       <div className="nav-row">

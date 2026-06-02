@@ -1,8 +1,19 @@
 import { useState } from 'react';
 import RadioGroup from '../components/RadioGroup';
 
-const SMOKES_OPTS  = ['Never', 'Occasionally', 'Regularly'];
-const DRINKS_OPTS  = ['Never', 'Occasionally', 'Regularly'];
+const OCCUPATION_OPTS = [
+  '', 'Student', 'Designer / Creative', 'Engineer / Developer',
+  'Founder / Entrepreneur', 'Product / Marketing', 'Finance / Consulting',
+  'Healthcare', 'Sales / Business Dev', 'Content / Media',
+  'Manager / Operations', 'Other',
+];
+
+const CITY_OPTS = [
+  '', 'Mumbai', 'Bengaluru', 'Hyderabad', 'Pune', 'Delhi', 'Gurgaon', 'Others',
+];
+
+const SMOKES_OPTS   = ['Never', 'Occasionally', 'Regularly'];
+const DRINKS_OPTS   = ['Never', 'Occasionally', 'Regularly'];
 const CAFFEINE_OPTS = [
   { value: 'none',  label: 'None' },
   { value: '1cup',  label: '1 cup/day' },
@@ -14,7 +25,7 @@ const SUPP_OPTS = [
 ];
 
 export default function Step1Identity({ onNext }) {
-  const [form, setForm]   = useState({
+  const [form, setForm] = useState({
     name: '', contact: '', age: '', occupation: '', city: '',
     smokes: '', drinks: '', caffeine: '', takesSupplements: '', supplementDetails: '',
   });
@@ -27,12 +38,12 @@ export default function Step1Identity({ onNext }) {
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim())    e.name    = 'Name is required';
-    if (!form.contact.trim()) e.contact = 'Phone or email is required';
-    if (!form.smokes)         e.smokes  = 'Please select one';
-    if (!form.drinks)         e.drinks  = 'Please select one';
-    if (!form.caffeine)       e.caffeine = 'Please select one';
-    if (!form.takesSupplements) e.takesSupplements = 'Please select one';
+    if (!form.name.trim())        e.name             = 'Name is required';
+    if (!form.contact.trim())     e.contact          = 'Phone or email is required';
+    if (!form.smokes)             e.smokes           = 'Please select one';
+    if (!form.drinks)             e.drinks           = 'Please select one';
+    if (!form.caffeine)           e.caffeine         = 'Please select one';
+    if (!form.takesSupplements)   e.takesSupplements = 'Please select one';
     return e;
   };
 
@@ -87,22 +98,24 @@ export default function Step1Identity({ onNext }) {
 
       <div className="field">
         <label className="field-label">What do you do?</label>
-        <input
-          type="text"
-          value={form.occupation}
-          onChange={e => set('occupation', e.target.value)}
-          placeholder="Designer, founder, engineer…"
-        />
+        <select value={form.occupation} onChange={e => set('occupation', e.target.value)}>
+          {OCCUPATION_OPTS.map(opt => (
+            <option key={opt} value={opt} disabled={opt === ''}>
+              {opt === '' ? 'Select your occupation' : opt}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="field">
-        <label className="field-label">City / Neighbourhood</label>
-        <input
-          type="text"
-          value={form.city}
-          onChange={e => set('city', e.target.value)}
-          placeholder="Bengaluru, Koramangala"
-        />
+        <label className="field-label">City</label>
+        <select value={form.city} onChange={e => set('city', e.target.value)}>
+          {CITY_OPTS.map(opt => (
+            <option key={opt} value={opt} disabled={opt === ''}>
+              {opt === '' ? 'Select your city' : opt}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="divider" />
@@ -142,7 +155,7 @@ export default function Step1Identity({ onNext }) {
       </div>
 
       <div className="field">
-        <label className="field-label">Do you take supplements or nootropics? <span className="required">*</span></label>
+        <label className="field-label">Do you take any supplements? <span className="required">*</span></label>
         <RadioGroup
           options={SUPP_OPTS}
           value={form.takesSupplements}
