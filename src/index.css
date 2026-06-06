@@ -890,3 +890,89 @@ select option:disabled {
   margin-bottom: 8px;
   word-break: break-all;
 }
+
+/* ── Pin gate ────────────────────────────────────────────── */
+.pin-gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 24px;
+}
+
+.pin-box {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.pin-mark {
+  font-size: 22px;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 24px;
+}
+
+.pin-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.pin-hint {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.pin-input-wrap {
+  width: 100%;
+  margin-bottom: 10px;
+  transition: transform var(--transition);
+}
+
+.pin-input {
+  width: 100%;
+  height: 58px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 20px;
+  letter-spacing: 0.15em;
+  text-align: center;
+  outline: none;
+  transition: border-color var(--transition);
+  -webkit-appearance: none;
+}
+
+.pin-input:focus { border-color: var(--border-focus); }
+
+.pin-input-wrap.pin-error .pin-input { border-color: var(--error); }
+
+.pin-error-msg {
+  font-size: 13px;
+  color: var(--error);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.pin-box .btn-primary { margin-top: 8px; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-6px); }
+  80%       { transform: translateX(6px); }
+}
+
+.shake { animation: shake 0.45s ease; }

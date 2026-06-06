@@ -1,4 +1,5 @@
 import { useState }    from 'react';
+import PinGate          from './components/PinGate';
 import { supabase }    from './lib/supabase';
 import ProgressBar     from './components/ProgressBar';
 import StepAdmin       from './steps/StepAdmin';
@@ -29,6 +30,7 @@ const getExt = (file) => {
 };
 
 export default function App() {
+  const [unlocked, setUnlocked] = useState(false);
   const [step,         setStep]       = useState(0);
   const [formData,     setFormData]   = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
@@ -102,6 +104,8 @@ export default function App() {
       setSubmitting(false);
     }
   };
+
+  if (!unlocked) return <PinGate onUnlock={() => setUnlocked(true)} />;
 
   return (
     <div className="app">
