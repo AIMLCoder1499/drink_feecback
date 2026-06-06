@@ -25,6 +25,15 @@ const OCCASION_OPTS = [
   'Morning instead of coffee',
 ];
 
+const FREQUENCY_OPTS = [
+  { value: 'daily',        label: 'Daily' },
+  { value: '3to4_week',    label: '3–4 times a week' },
+  { value: '1to2_week',    label: 'Once or twice a week' },
+  { value: 'few_month',    label: 'A few times a month' },
+  { value: 'occasionally', label: 'Rarely / special occasions' },
+  { value: 'never',        label: "Wouldn't consume again" },
+];
+
 const FOLLOWUP_OPTS = [
   { value: 'yes', label: 'Yes, happy to chat' },
   { value: 'no',  label: 'No thanks' },
@@ -35,6 +44,7 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
     tasteRating: 0,
     aromaRating: 0,
     wouldBuy: '',
+    consumeFrequency: '',
     pricePoint: '',
     occasions: [],
     feedbackAudioBlob: null,
@@ -51,8 +61,9 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
     const e = {};
     if (!form.tasteRating)           e.taste      = 'Please rate the taste';
     if (!form.aromaRating)           e.aroma      = 'Please rate the aroma';
-    if (!form.wouldBuy)              e.wouldBuy   = 'Please select one';
-    if (!form.pricePoint)            e.pricePoint = 'Please select one';
+    if (!form.wouldBuy)              e.wouldBuy        = 'Please select one';
+    if (!form.consumeFrequency)      e.consumeFrequency = 'Please select one';
+    if (!form.pricePoint)            e.pricePoint      = 'Please select one';
     if (form.occasions.length === 0) e.occasions  = 'Select at least one';
     if (!form.openToFollowup)        e.followup   = 'Please select one';
     return e;
@@ -98,6 +109,17 @@ export default function Step3Product({ onSubmit, onBack, isSubmitting, error }) 
           onChange={v => set('wouldBuy', v)}
         />
         {errors.wouldBuy && <p className="field-error">{errors.wouldBuy}</p>}
+      </div>
+
+      {/* Consume frequency */}
+      <div className="field">
+        <label className="field-label">How often would you consume this? <span className="required">*</span></label>
+        <RadioGroup
+          options={FREQUENCY_OPTS}
+          value={form.consumeFrequency}
+          onChange={v => set('consumeFrequency', v)}
+        />
+        {errors.consumeFrequency && <p className="field-error">{errors.consumeFrequency}</p>}
       </div>
 
       {/* Price point — dropdown */}
