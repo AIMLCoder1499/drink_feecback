@@ -796,3 +796,97 @@ select option {
 select option:disabled {
   color: var(--text-muted);
 }
+
+/* ── Admin step ──────────────────────────────────────────── */
+.admin-step {
+  border-top: 2px solid var(--sage);
+  padding-top: 16px;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sage-light);
+  background: rgba(75, 126, 90, 0.12);
+  border: 1px solid rgba(75, 126, 90, 0.3);
+  border-radius: 6px;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+}
+
+.admin-cta { background: var(--sage); }
+.admin-cta:not(:disabled):hover { background: var(--sage-light); }
+
+/* ── Quantity row ────────────────────────────────────────── */
+.quantity-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.quantity-row input { flex: 1; }
+
+.unit-select {
+  width: 100px !important;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.unit-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+/* ── Recorder idle options ───────────────────────────────── */
+.recorder-idle-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recorder-idle-options .btn-record-start {
+  flex: 1;
+}
+
+.recorder-or {
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.btn-upload-audio {
+  flex: 1;
+  height: 52px;
+  background: var(--surface-2);
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-upload-audio:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-dim);
+}
+
+.btn-upload-audio:active { transform: scale(0.98); }
+
+/* ── Uploaded filename ───────────────────────────────────── */
+.uploaded-filename {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  word-break: break-all;
+}

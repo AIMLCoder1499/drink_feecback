@@ -3,6 +3,14 @@ import RadioGroup    from '../components/RadioGroup';
 import MultiSelect   from '../components/MultiSelect';
 import VoiceRecorder from '../components/VoiceRecorder';
 
+const STATE_OPTS = [
+  { value: 'sober',      label: 'Sober' },
+  { value: 'light_buzz', label: 'Light alcohol buzz' },
+  { value: 'high',       label: 'High — cannabis' },
+  { value: 'mixed',      label: 'Alcohol + cannabis' },
+  { value: 'other',      label: 'Other' },
+];
+
 const FELT_OPTS = [
   { value: 'yes',      label: 'Yes, felt something' },
   { value: 'no',       label: 'No effect noticed' },
@@ -34,12 +42,13 @@ const UNWANTED_OPTS = [
 
 export default function Step2Effect({ onNext, onBack }) {
   const [form, setForm] = useState({
-    feltEffect: '',
-    effectOnset: '',
-    effectDescriptors: [],
-    effectOtherText: '',
-    effectAudioBlob: null,
-    unwantedEffects: [],
+    currentState:       '',
+    feltEffect:         '',
+    effectOnset:        '',
+    effectDescriptors:  [],
+    effectOtherText:    '',
+    effectAudioBlob:    null,
+    unwantedEffects:    [],
   });
   const [errors, setErrors] = useState({});
 
@@ -50,11 +59,12 @@ export default function Step2Effect({ onNext, onBack }) {
 
   const validate = () => {
     const e = {};
-    if (!form.feltEffect)                       e.feltEffect   = 'Please select one';
-    if (!form.effectOnset)                      e.effectOnset  = 'Please select one';
-    if (form.effectDescriptors.length === 0)    e.descriptors  = 'Select at least one';
-    if (!form.effectAudioBlob)                  e.audio        = 'Please record your response';
-    if (form.unwantedEffects.length === 0)      e.unwanted     = 'Select at least one (or None)';
+    if (!form.currentState)                  e.currentState = 'Please select one';
+    if (!form.feltEffect)                    e.feltEffect   = 'Please select one';
+    if (!form.effectOnset)                   e.effectOnset  = 'Please select one';
+    if (form.effectDescriptors.length === 0) e.descriptors  = 'Select at least one';
+    if (!form.effectAudioBlob)               e.audio        = 'Please record or upload your response';
+    if (form.unwantedEffects.length === 0)   e.unwanted     = 'Select at least one (or None)';
     return e;
   };
 
@@ -73,9 +83,22 @@ export default function Step2Effect({ onNext, onBack }) {
         <h2 className="step-title">The Effect</h2>
       </div>
 
+      {/* Current state */}
+      <div className="field">
+        <label className="field-label">
+          What best describes your state right now? <span className="required">*</span>
+        </label>
+        <RadioGroup
+          options={STATE_OPTS}
+          value={form.currentState}
+          onChange={v => set('currentState', v)}
+        />
+        {errors.currentState && <p className="field-error">{errors.currentState}</p>}
+      </div>
+
       {/* Felt anything? */}
       <div className="field">
-        <label className="field-label">Did you feel any effect? <span className="required">*</span></label>
+        <label className="field-label">Did you feel any effect from the drink? <span className="required">*</span></label>
         <RadioGroup
           options={FELT_OPTS}
           value={form.feltEffect}
@@ -122,13 +145,13 @@ export default function Step2Effect({ onNext, onBack }) {
         {errors.descriptors && <p className="field-error">{errors.descriptors}</p>}
       </div>
 
-      {/* Voice recorder */}
+      {/* Voice / upload */}
       <div className="field">
         <label className="field-label" style={{ marginBottom: 12 }}>
           Describe what you felt <span className="required">*</span>
         </label>
         <VoiceRecorder
-          label="In your own words — body, head, mood. Take your time."
+          label="In your own words — body, head, mood. Record or upload a voice note."
           onRecordingComplete={blob => set('effectAudioBlob', blob)}
         />
         {errors.audio && <p className="field-error" style={{ marginTop: 8 }}>{errors.audio}</p>}
